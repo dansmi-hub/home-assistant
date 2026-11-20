@@ -1,10 +1,12 @@
-# IKEA BILRESA - Living room, all lights on Channel 1
+# IKEA BILRESA - Living room, all lights on Channel 1, bedroom light on Channel 2
 #
 # Channel 1 scroll (wheel) : brightness on lamp + light strip (dimmable)
-# Channel 1 click          : all lights on/off (book lamp, lamp, strip)
+# Channel 1 click          : all living room lights on/off (book lamp, lamp, strip)
+# Channel 2 scroll (wheel) : brightness on bedroom light (dimmable)
+# Channel 2 click          : bedroom light on/off
+# Channel 3                : unused
 #
 # Book lamp is a smart plug (on/off only), so scroll cannot dim it.
-# Channels 2 and 3 are unused.
 
 alias: IKEA BILRESA - Light Controller (v1.5)
 description: ''
@@ -13,7 +15,7 @@ use_blueprint:
   input:
     remote_device: e92ea300a887bb4d7921231de1f87684
 
-    # Channel 1 scroll: dims the dimmable lights
+    # Channel 1 scroll: dims the dimmable living room lights
     input_light_1:
       entity_id:
         - light.living_room_lamp
@@ -21,7 +23,7 @@ use_blueprint:
     input_mode_1: brightness
     input_transition_1: 50
 
-    # Channel 1 click: turns all lights on or off together.
+    # Channel 1 click: turns all living room lights on or off together.
     # If any light is on, turn everything off. Otherwise turn everything on.
     input_click_mode_1: action
     input_click_1:
@@ -59,4 +61,30 @@ use_blueprint:
           - action: switch.turn_on
             target:
               entity_id: switch.living_room_book_lamp
+            data: {}
+
+    # Channel 2 scroll: dims the bedroom light
+    input_light_2:
+      entity_id:
+        - light.bedroom_light
+    input_mode_2: brightness
+    input_transition_2: 50
+
+    # Channel 2 click: bedroom light on or off
+    input_click_mode_2: action
+    input_click_2:
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: light.bedroom_light
+                state: "on"
+            sequence:
+              - action: light.turn_off
+                target:
+                  entity_id: light.bedroom_light
+                data: {}
+        default:
+          - action: light.turn_on
+            target:
+              entity_id: light.bedroom_light
             data: {}
