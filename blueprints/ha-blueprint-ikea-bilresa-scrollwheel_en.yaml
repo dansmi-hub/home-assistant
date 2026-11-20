@@ -385,7 +385,8 @@ blueprint:
             selector: { action: {} },
           }
 
-mode: single
+mode: queued
+max: 20
 max_exceeded: silent
 
 trigger_variables:
@@ -462,9 +463,8 @@ action:
 
   - condition: template
     value_template: >-
-      {{ trigger.event.data.old_state is not none
-         and trigger.event.data.new_state is not none
-         and trigger.event.data.old_state.state not in ['unavailable', 'unknown']
+      {{ trigger.event.data.new_state is not none
+         and (trigger.event.data.old_state is none or trigger.event.data.old_state.state not in ['unavailable', 'unknown'])
          and trigger.event.data.new_state.state not in ['unavailable', 'unknown'] }}
 
   - condition: template
@@ -544,7 +544,7 @@ action:
                   - variables:
                       target_value: >
                         {% set current = state_attr(curr_target, 'brightness') | int(128) %}
-                        {{ [([current + (step_val * 2.55) | int, 0] | max), 255] | min }}
+                        {{ [([current + (step_val * 2.55) | int, 1] | max), 255] | min }}
                   - service: light.turn_on
                     target:
                       entity_id: "{{ curr_target_list }}"
@@ -601,7 +601,7 @@ action:
                         sequence:
                           - service: scene.turn_on
                             target:
-                              entity_id: "{% set count = c_scenes | count %}{% set idx = (as_timestamp(now()) | int // 2) % count %}{{ c_scenes[idx] }}"
+                              entity_id: "{% set sc = c_scenes %}{% set ns = namespace(best=-1, best_t='') %}{% for s in sc %}{% set t = states(s) %}{% if t not in ['unknown', 'unavailable'] and t > ns.best_t %}{% set ns.best = loop.index0 %}{% set ns.best_t = t %}{% endif %}{% endfor %}{{ sc[(ns.best + 1) % (sc | count)] }}"
                       - conditions: "{{ c_mode == 'action' }}"
                         sequence:
                           - choose:
