@@ -1,5 +1,5 @@
 blueprint:
-  name: "IKEA BILRESA - Light Controller (v1.5)"
+  name: "IKEA BILRESA Scroll Wheel - Light Control (v1.5, fixed)"
   description: >
     Light control for IKEA BILRESA (Matter). Supports dynamic scrolling, scene cycling, and multi-click actions for up to three channels.
 
