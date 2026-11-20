@@ -1,12 +1,30 @@
-# Home Assistant
+# Home Assistant config
 
-Config and notes for my Home Assistant install at 192.168.1.175.
+Declarative config for my Home Assistant install (LAN address 192.168.1.175).
 
 ## Layout
 
-- `blueprints/` - blueprints in use (e.g. IKEA BILRESA scroll wheel)
-- `notes/` - device mapping and automation notes
+This mirrors Home Assistant's own config folders, so a Git pull into the config
+directory puts each file where HA expects it.
+
+```
+blueprints/automation/<author>/     Blueprints HA loads from its Blueprints page
+  dansmi-hub/bilresa_scroll_wheel.yaml
+
+automations/<area>/                 Automation configs, one file per automation
+  living_room/bilresa_all_lights.yaml
+```
+
+Blueprint paths in automations are relative to `blueprints/automation/`, so
+`path: dansmi-hub/bilresa_scroll_wheel.yaml` points at the file above.
+
+## Naming
+
+- Files: lowercase, underscores, named after the device or job (`bilresa_scroll_wheel`, `bilresa_all_lights`).
+- Folders: `<author>` for blueprints, `<room or area>` for automations.
 
 ## Notes
 
-- Access tokens live in `secrets.yaml` or the Claude Code MCP config, never in git.
+- Keep tokens and passwords out of git. `secrets.yaml` and `.env` are ignored.
+- Home Assistant runtime state (`.storage/`, logs, databases) is ignored.
+- Live automations on the HA box may differ from what's in git until they're re-applied.
