@@ -1,0 +1,15 @@
+# Secrets and tokens - never commit
+secrets.yaml
+*.token
+.env
+
+# Home Assistant runtime state (not config)
+.storage/
+.cloud/
+home-assistant.log*
+*.db
+*.db-shm
+*.db-wal
+deps/
+tts/
+__pycache__/
