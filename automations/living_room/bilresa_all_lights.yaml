@@ -21,6 +21,7 @@ use_blueprint:
         - light.living_room_lamp
         - light.living_room_light_strip
     input_mode_1: brightness
+    input_sens_1: 2        # multiplier: ~2% brightness per detent (default 5 = ~5%)
     input_transition_1: 50
 
     # Channel 1 click: turns all living room lights on or off together.
@@ -68,6 +69,7 @@ use_blueprint:
       entity_id:
         - light.bedroom_light
     input_mode_2: brightness
+    input_sens_2: 2        # multiplier: ~2% brightness per detent (default 5 = ~5%)
     input_transition_2: 50
 
     # Channel 2 click: bedroom light on or off
