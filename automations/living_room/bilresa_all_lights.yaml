@@ -9,7 +9,7 @@
 alias: IKEA BILRESA - Light Controller (v1.5)
 description: ''
 use_blueprint:
-  path: dansmi-hub/ikea_bilresa_scroll_wheel_light_control.yaml
+  path: dansmi-hub/ikea_bilresa_scroll_wheel.yaml
   input:
     remote_device: e92ea300a887bb4d7921231de1f87684
 

@@ -9,14 +9,14 @@ directory puts each file where HA expects it.
 
 ```
 blueprints/automation/<author>/     Blueprints HA loads from its Blueprints page
-  dansmi-hub/ikea_bilresa_scroll_wheel_light_control.yaml
+  dansmi-hub/ikea_bilresa_scroll_wheel.yaml
 
 automations/<area>/                 Automation configs, one file per automation
   living_room/bilresa_all_lights.yaml
 ```
 
 Blueprint paths in automations are relative to `blueprints/automation/`, so
-`path: dansmi-hub/ikea_bilresa_scroll_wheel_light_control.yaml` points at the file above.
+`path: dansmi-hub/ikea_bilresa_scroll_wheel.yaml` points at the file above.
 
 ## Naming
 
