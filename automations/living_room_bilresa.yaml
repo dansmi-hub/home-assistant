@@ -1,0 +1,62 @@
+# IKEA BILRESA - Living room, all lights on Channel 1
+#
+# Channel 1 scroll (wheel) : brightness on lamp + light strip (dimmable)
+# Channel 1 click          : all lights on/off (book lamp, lamp, strip)
+#
+# Book lamp is a smart plug (on/off only), so scroll cannot dim it.
+# Channels 2 and 3 are unused.
+
+alias: IKEA BILRESA - Light Controller (v1.5)
+description: ''
+use_blueprint:
+  path: SvKRO/ha-blueprint-ikea-bilresa-scrollwheel_en.yaml
+  input:
+    remote_device: e92ea300a887bb4d7921231de1f87684
+
+    # Channel 1 scroll: dims the dimmable lights
+    input_light_1:
+      entity_id:
+        - light.living_room_lamp
+        - light.living_room_light_strip
+    input_mode_1: brightness
+    input_transition_1: 50
+
+    # Channel 1 click: turns all lights on or off together.
+    # If any light is on, turn everything off. Otherwise turn everything on.
+    input_click_mode_1: action
+    input_click_1:
+      - choose:
+          - conditions:
+              - condition: or
+                conditions:
+                  - condition: state
+                    entity_id: light.living_room_lamp
+                    state: "on"
+                  - condition: state
+                    entity_id: light.living_room_light_strip
+                    state: "on"
+                  - condition: state
+                    entity_id: switch.living_room_book_lamp
+                    state: "on"
+            sequence:
+              - action: light.turn_off
+                target:
+                  entity_id:
+                    - light.living_room_lamp
+                    - light.living_room_light_strip
+                data: {}
+              - action: switch.turn_off
+                target:
+                  entity_id: switch.living_room_book_lamp
+                data: {}
+        default:
+          - action: light.turn_on
+            target:
+              entity_id:
+                - light.living_room_lamp
+                - light.living_room_light_strip
+            data: {}
+          - action: switch.turn_on
+            target:
+              entity_id: switch.living_room_book_lamp
+            data: {}
